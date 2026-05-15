@@ -1,0 +1,43 @@
+- rule: professional_retention_rates
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 106 LISR — Retención por honorarios persona física"
+  data:
+    standard_isr: 0.10
+    notes: "Persona moral retiene 10% ISR a persona física por honorarios."
+
+- rule: vat_withholding_rates
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 1-A LIVA — Retención de IVA"
+  data:
+    services_persona_fisica: 0.106667    # 2/3 del IVA 16% (=10.6667%)
+    transport_terrestre: 0.04
+    autotransporte_carga: 0.04
+    notes: "Persona moral retiene 2/3 IVA de servicios prestados por persona física. Otras retenciones variables."
+
+- rule: rental_retention_rates
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 116 LISR — Arrendamiento"
+  data:
+    isr: 0.10
+    iva: 0.106667
+    notes: "Si arrendador persona física: retención 10% ISR + 2/3 IVA."
+
+- rule: resico_rates
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Capítulo II Sección IV LISR — RESICO (Régimen Simplificado de Confianza)"
+  data:
+    persona_fisica:
+      - {limite_ingresos_anuales: 300000, tasa: 0.01}
+      - {limite_ingresos_anuales: 600000, tasa: 0.011}
+      - {limite_ingresos_anuales: 1000000, tasa: 0.015}
+      - {limite_ingresos_anuales: 2500000, tasa: 0.02}
+      - {limite_ingresos_anuales: 3500000, tasa: 0.025}
+    notes: "RESICO permite tasas muy bajas a personas físicas con ingresos hasta 3.5M anuales. Sustituye ISR ordinario."

@@ -1,0 +1,86 @@
+- rule: vacation_days_minimum
+  country: MX
+  effective_from: 2023-01-01           # Reforma "Vacaciones Dignas" 2023
+  effective_until: null
+  source: "Art. 76 LFT — Reforma DOF 2022-12-27"
+  data:
+    schedule:
+      - {year: 1, days: 12}
+      - {year: 2, days: 14}
+      - {year: 3, days: 16}
+      - {year: 4, days: 18}
+      - {year: 5, days: 20}
+      - {year_band: [6, 10], days: 22}
+      - {year_band: [11, 15], days: 24}
+      - {year_band: [16, 20], days: 26}
+      - {year_band: [21, 25], days: 28}
+      - {year_band: [26, 30], days: 30}
+      - {year_band: [31, 35], days: 32}
+    natural_days_first_year: 12
+    notes: "Vacaciones reforma 2023 — 12 días primer año, +2 cada año hasta 5to, luego +2 cada 5 años."
+
+- rule: prima_vacacional
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 80 LFT"
+  data:
+    percentage: 0.25
+    notes: "25% sobre salario correspondiente a vacaciones."
+
+- rule: aguinaldo
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 87 LFT"
+  data:
+    minimum_days: 15
+    deadline: "20 de diciembre"
+    notes: "Mínimo 15 días de salario, exigible antes del 20 dic. Proporcional si menos de 1 año."
+
+- rule: leave_reasons
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "LFT Art. 132 + IMSS"
+  data:
+    matrimonio:
+      days: null
+      unit: per_convenio
+      legal_ref: "LFT (no expresamente regulado — depende de convenio o reglamento interno)"
+    fallecimiento_familiar:
+      days: null
+      unit: per_convenio
+      legal_ref: "LFT no establece, requiere convenio colectivo"
+    maternidad:
+      weeks_before: 6
+      weeks_after: 6
+      legal_ref: "Art. 170 LFT + IMSS subsidio 100%"
+    paternidad:
+      days: 5
+      legal_ref: "Art. 132 fracc. XXVII Bis LFT"
+    adopcion:
+      weeks: 6
+      legal_ref: "Art. 170 LFT"
+    incapacidad_riesgo_trabajo:
+      days: null
+      unit: hasta_alta_medica
+      legal_ref: "Art. 487 LFT + IMSS subsidio 100% desde 1er día"
+    incapacidad_enfermedad_general:
+      days: null
+      unit: hasta_alta_medica
+      legal_ref: "Art. 42 fracc. II LFT + IMSS subsidio 60% desde día 4"
+
+- rule: national_holidays_default
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: 2026-12-31
+  source: "Art. 74 LFT — días de descanso obligatorio"
+  data:
+    - {date: "2026-01-01", name: "Año Nuevo"}
+    - {date: "2026-02-02", name: "Día de la Constitución (1er lunes feb)"}
+    - {date: "2026-03-16", name: "Natalicio Benito Juárez (3er lunes marzo)"}
+    - {date: "2026-05-01", name: "Día del Trabajo"}
+    - {date: "2026-09-16", name: "Día de la Independencia"}
+    - {date: "2026-11-16", name: "Revolución Mexicana (3er lunes nov)"}
+    - {date: "2026-12-25", name: "Navidad"}

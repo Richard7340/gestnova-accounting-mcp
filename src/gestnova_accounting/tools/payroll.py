@@ -7,6 +7,7 @@ from typing import Any
 from ._base import BaseTool
 from ..engine.rule_lookup import RuleLookup
 from ..engine.calc.payroll import compute_payroll_es
+from ..engine.calc.payroll_mx import compute_payroll_mx
 
 
 def _result_to_jsonable(r):
@@ -64,9 +65,10 @@ class CalculatePayrollTool(BaseTool):
 
     async def execute(self, args: dict[str, Any]) -> dict[str, Any]:
         country = args["country"]
-        if country != "ES":
-            return {"error": "not_supported_for_country", "country": country, "hint": "MX pack lands in Plan 3."}
-        result = compute_payroll_es(
+        compute = {"ES": compute_payroll_es, "MX": compute_payroll_mx}.get(country)
+        if not compute:
+            return {"error": "not_supported_for_country", "country": country}
+        result = compute(
             lookup=get_lookup(),
             monthly_base=Decimal(args["monthlyBase"]),
             extras=args.get("extras", []),
@@ -96,8 +98,10 @@ class SimulatePayrollChangeTool(BaseTool):
     }
 
     async def execute(self, args: dict[str, Any]) -> dict[str, Any]:
-        if args["country"] != "ES":
-            return {"error": "not_supported_for_country", "country": args["country"]}
+        country = args["country"]
+        compute = {"ES": compute_payroll_es, "MX": compute_payroll_mx}.get(country)
+        if not compute:
+            return {"error": "not_supported_for_country", "country": country}
 
         d = date.fromisoformat(args["periodStart"])
         base = Decimal(args["monthlyBase"])
@@ -105,30 +109,42 @@ class SimulatePayrollChangeTool(BaseTool):
         simulated_extras = [e for e in current_extras if e["code"] not in args.get("removeExtraCodes", [])]
         simulated_extras += args.get("addExtras", [])
 
-        current = compute_payroll_es(lookup=get_lookup(), monthly_base=base, extras=current_extras, on_date=d)
-        simulated = compute_payroll_es(lookup=get_lookup(), monthly_base=base, extras=simulated_extras, on_date=d)
+        current = compute(lookup=get_lookup(), monthly_base=base, extras=current_extras, on_date=d)
+        simulated = compute(lookup=get_lookup(), monthly_base=base, extras=simulated_extras, on_date=d)
 
         def diff(a, b):
             return a - b
 
-        delta = {
-            "bruto": diff(simulated["bruto"], current["bruto"]),
-            "retencion_irpf": diff(simulated["retencion_irpf"]["amount"], current["retencion_irpf"]["amount"]),
-            "ss_empleado": diff(simulated["ss_empleado"]["amount"], current["ss_empleado"]["amount"]),
-            "liquido": diff(simulated["liquido"], current["liquido"]),
-        }
+        # Country-aware deltas: ES uses retencion_irpf+ss_empleado, MX uses isr.retenido+imss_empleado
+        if country == "ES":
+            delta = {
+                "bruto": diff(simulated["bruto"], current["bruto"]),
+                "retencion_irpf": diff(simulated["retencion_irpf"]["amount"], current["retencion_irpf"]["amount"]),
+                "ss_empleado": diff(simulated["ss_empleado"]["amount"], current["ss_empleado"]["amount"]),
+                "liquido": diff(simulated["liquido"], current["liquido"]),
+            }
+        else:  # MX
+            delta = {
+                "bruto": diff(simulated["bruto"], current["bruto"]),
+                "isr_retenido": diff(simulated["isr"]["retenido"], current["isr"]["retenido"]),
+                "imss_empleado": diff(simulated["imss_empleado"]["amount"], current["imss_empleado"]["amount"]),
+                "liquido": diff(simulated["liquido"], current["liquido"]),
+            }
 
         bits = []
         bruto_d = delta["bruto"]
         liq_d = delta["liquido"]
+        currency = "€" if country == "ES" else "$"
         if bruto_d != 0:
             sign = "+" if bruto_d > 0 else ""
-            bits.append(f"Bruto cambia {sign}{bruto_d}€")
+            bits.append(f"Bruto cambia {sign}{bruto_d}{currency}")
         if liq_d != 0:
             sign = "+" if liq_d > 0 else ""
-            bits.append(f"líquido {sign}{liq_d}€")
-        if delta["retencion_irpf"] != 0:
-            bits.append(f"IRPF se ajusta {delta['retencion_irpf']:+}€")
+            bits.append(f"líquido {sign}{liq_d}{currency}")
+        tax_delta_key = "retencion_irpf" if country == "ES" else "isr_retenido"
+        if delta.get(tax_delta_key, 0) != 0:
+            tax_label = "IRPF" if country == "ES" else "ISR"
+            bits.append(f"{tax_label} se ajusta {delta[tax_delta_key]:+}{currency}")
         explanation = ". ".join(bits) + "." if bits else "Sin cambios."
 
         return _result_to_jsonable({
@@ -241,23 +257,33 @@ class GeneratePayslipTool(BaseTool):
     }
 
     async def execute(self, args: dict[str, Any]) -> dict[str, Any]:
-        if args["country"] != "ES":
-            return {"error": "not_supported_for_country", "country": args["country"]}
-        comp = compute_payroll_es(
+        country = args["country"]
+        compute = {"ES": compute_payroll_es, "MX": compute_payroll_mx}.get(country)
+        if not compute:
+            return {"error": "not_supported_for_country", "country": country}
+        comp = compute(
             lookup=get_lookup(),
             monthly_base=Decimal(args["monthlyBase"]),
             extras=args.get("extras", []),
             on_date=date.fromisoformat(args["periodStart"]),
         )
+        if country == "ES":
+            deducciones = {
+                "irpf": comp["retencion_irpf"],
+                "ss_empleado": comp["ss_empleado"],
+            }
+        else:  # MX
+            deducciones = {
+                "isr": comp["isr"],
+                "imss_empleado": comp["imss_empleado"],
+            }
         payslip = {
+            "country": country,
             "employee": args["employee"],
             "company": args["company"],
             "period": {"start": args["periodStart"], "end": args["periodEnd"]},
             "conceptos": comp["conceptos"],
-            "deducciones": {
-                "irpf": comp["retencion_irpf"],
-                "ss_empleado": comp["ss_empleado"],
-            },
+            "deducciones": deducciones,
             "totals": {
                 "bruto": comp["bruto"],
                 "liquido": comp["liquido"],

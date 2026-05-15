@@ -1,0 +1,32 @@
+- rule: diot
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 32 fracc. VIII LIVA — Declaración Informativa de Operaciones con Terceros"
+  data:
+    name: "DIOT — Declaración Informativa de Operaciones con Terceros"
+    frequency: mensual
+    deadline_day: "último día hábil del mes siguiente"
+    purpose: "Reportar al SAT las operaciones con proveedores (compras), distinguiendo IVA pagado por tipo."
+    sections:
+      proveedores:
+        # Por cada proveedor con quien se tuvieron operaciones en el mes
+        fields:
+          - tipo_tercero: "04=Proveedor nacional / 05=Proveedor extranjero / 15=Proveedor global"
+          - tipo_operacion: "85=Otros / 03=Prestación servicios profesionales / 06=Arrendamiento"
+          - rfc_proveedor
+          - id_fiscal_extranjero
+          - nombre_extranjero
+          - pais_residencia
+          - valor_actos_15pct_iva: "Histórico"
+          - valor_actos_16pct_iva: "General"
+          - iva_pagado_no_acreditable_15
+          - iva_pagado_no_acreditable_16
+          - valor_actos_importacion_15
+          - valor_actos_importacion_16
+          - iva_pagado_importacion_15
+          - iva_pagado_importacion_16
+          - valor_actos_tasa_cero
+          - valor_actos_exentos
+          - iva_retenido
+          - iva_devuelto

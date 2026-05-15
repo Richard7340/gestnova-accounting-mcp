@@ -1,0 +1,82 @@
+- rule: vat_rates
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Ley del IVA Art. 1, 2, 2-A — tasas 2026"
+  data:
+    general: 0.16
+    frontera: 0.08         # Estímulo fiscal zona frontera norte/sur
+    cero: 0.0              # Alimentos básicos, medicinas, libros
+    exento: 0.0
+
+- rule: vat_categories
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Ley del IVA Art. 2-A + Art. 9 (exentos)"
+  data:
+    # Maps natural categories → tipo MX
+    consultoria: general
+    servicios_profesionales: general
+    suministros_oficina: general
+    luz: general
+    agua: general
+    internet: general
+    telefonia: general
+    gasolina_combustible: general
+    hosteleria_restauracion: general
+    transporte_pasajeros_aereo: general
+    alimentos_basicos: cero
+    medicinas_patentes: cero
+    libros_periodicos_revistas: cero
+    productos_higiene_femenina: cero      # reforma 2022
+    educacion_publica_privada_reconocida: exento
+    sanidad_publica_privada: exento
+    transporte_publico_terrestre: exento
+    alquiler_vivienda: exento
+    intereses_bancarios: exento
+
+- rule: invoice_required_fields
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 29 CFF + CFDI 4.0 (Anexo 20 RMF 2026)"
+  data:
+    required:
+      - emisor_rfc
+      - emisor_nombre
+      - emisor_regimen_fiscal
+      - receptor_rfc
+      - receptor_nombre
+      - receptor_uso_cfdi
+      - receptor_regimen_fiscal
+      - receptor_codigo_postal
+      - serie
+      - folio
+      - fecha_emision
+      - lugar_expedicion
+      - metodo_pago         # PUE / PPD
+      - forma_pago
+      - moneda
+      - subtotal
+      - total
+      - tipo_de_comprobante  # I / E / T / N / P
+      - conceptos
+    optional:
+      - condiciones_pago
+      - descuento
+
+- rule: cfdi_complements
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Catálogo SAT — Complementos CFDI 4.0"
+  data:
+    available:
+      - nomina           # Recibo de pago de nómina
+      - pago             # Complemento de pago (cuando metodoPago = PPD)
+      - donatarias
+      - comercio_exterior
+      - educacion        # Para deducción de colegiatura
+      - leyendas_fiscales
+    notes: "CFDI 4.0 requiere timbrado PAC autorizado. Lista PAC: lista del SAT."

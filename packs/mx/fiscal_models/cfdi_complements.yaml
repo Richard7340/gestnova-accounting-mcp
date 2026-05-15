@@ -1,0 +1,38 @@
+- rule: cfdi_4_0
+  country: MX
+  effective_from: 2022-01-01           # CFDI 4.0 mandatorio desde 2022
+  effective_until: null
+  source: "Anexo 20 RMF — Esquema CFDI 4.0 SAT"
+  data:
+    name: "CFDI 4.0 — Comprobante Fiscal Digital por Internet"
+    mandatory: true
+    requires_pac_timbrado: true
+    types:
+      I: "Ingreso (venta/factura)"
+      E: "Egreso (nota de crédito)"
+      T: "Traslado (movimiento mercancía)"
+      N: "Nómina"
+      P: "Pago (complemento de pago si metodoPago = PPD)"
+    metodos_pago:
+      PUE: "Pago en una exhibición (al momento de emisión)"
+      PPD: "Pago en parcialidades o diferido (requiere CFDI de pago posterior)"
+    usos_cfdi_principales:
+      G01: "Adquisición de mercancías"
+      G02: "Devoluciones, descuentos o bonificaciones"
+      G03: "Gastos en general"
+      I01: "Construcciones"
+      I02: "Mobiliario y equipo de oficina"
+      I04: "Equipo de cómputo y accesorios"
+      I08: "Otra maquinaria y equipo"
+      D01: "Honorarios médicos"
+      D02: "Gastos médicos por incapacidad o discapacidad"
+      D03: "Gastos funerales"
+      D04: "Donativos"
+      D05: "Intereses reales hipoteca"
+      D06: "Aportaciones voluntarias SAR"
+      D07: "Seguros de gastos médicos"
+      D08: "Gastos de transportación escolar obligatoria"
+      D09: "Depósitos cuentas ahorro/primas seguros"
+      D10: "Pagos por servicios educativos (colegiaturas)"
+      S01: "Sin efectos fiscales"
+      CP01: "Pagos"

@@ -1,0 +1,41 @@
+- rule: isr_annual_persona_moral
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 9 LISR — ISR Persona Moral (general)"
+  data:
+    name: "Declaración Anual ISR — Persona Moral"
+    frequency: anual
+    deadline: "31 de marzo del ejercicio siguiente"
+    tax_rate: 0.30
+    sections:
+      utilidad_fiscal:
+        fields:
+          - ingresos_acumulables
+          - deducciones_autorizadas
+          - utilidad_fiscal: "ingresos - deducciones"
+          - ptu_pagada_ejercicio_anterior
+          - perdidas_fiscales_aplicadas
+          - resultado_fiscal
+      isr_causado:
+        fields:
+          - resultado_fiscal_por_tasa: "resultado × 0.30"
+          - pagos_provisionales
+          - retenciones_recibidas
+          - acreditamientos
+          - isr_a_pagar_o_favor
+
+- rule: isr_annual_persona_fisica
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 152 LISR — ISR Persona Física (anual)"
+  data:
+    name: "Declaración Anual ISR — Persona Física"
+    frequency: anual
+    deadline: "30 de abril del ejercicio siguiente"
+    notes: "Aplica tarifa anual del Art. 152 LISR (similar a mensual escalada × 12). Deducciones personales: gastos médicos, intereses hipotecarios, colegiaturas, donativos."
+    deductions_limit:
+      max_percentage_of_income: 0.15
+      max_umas: 5
+      notes: "Deducciones personales: el menor entre 5 UMAs anuales o 15% del ingreso anual total."

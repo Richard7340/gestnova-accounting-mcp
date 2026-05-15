@@ -1,0 +1,70 @@
+- rule: max_daily_hours
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 61 LFT"
+  data:
+    diurna: 8
+    nocturna: 7
+    mixta: 7.5
+    notes: "Jornada diurna entre 06:00-20:00 (8h). Nocturna entre 20:00-06:00 (7h). Mixta cuando abarca ambos periodos sin más de 3.5h nocturnas (7.5h)."
+
+- rule: max_weekly_hours
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 61 LFT"
+  data:
+    diurna: 48
+    nocturna: 42
+    mixta: 45
+    notes: "Máximo semanal por tipo de jornada."
+
+- rule: max_overtime_yearly
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 66 + 67 LFT"
+  data:
+    hours: 468                          # 9 horas/semana × 52 semanas
+    max_per_week: 9                     # 3 días × 3 horas
+    max_per_day: 3
+    notes: "Máximo 3 horas extra/día, 3 veces/semana, no excediendo 9h/semana."
+
+- rule: overtime_pay
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 67 + 68 LFT"
+  data:
+    first_9_weekly_double: true        # Primeras 9h extra a la semana → pago doble
+    above_9_weekly_triple: true        # A partir de la 10ma extra → triple
+    notes: "Horas extra primeras 9/semana pagan 200% (doble). Excedente paga 300% (triple)."
+
+- rule: minimum_rest_between_shifts
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 63 LFT"
+  data:
+    hours_during_jornada: 0.5
+    notes: "Mínimo 30 min de descanso intermedio durante la jornada."
+
+- rule: minimum_weekly_rest
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 69 LFT"
+  data:
+    days: 1
+    notes: "Por cada 6 días trabajados, 1 día de descanso obligatorio (preferentemente domingo)."
+
+- rule: time_record_obligation
+  country: MX
+  effective_from: 2019-05-01
+  effective_until: null
+  source: "Art. 804 LFT — Obligación del patrón de conservar registros"
+  data:
+    obligatory: true
+    retention_years: 1
+    notes: "El patrón debe conservar registros de horas trabajadas. STPS puede inspeccionar. Retención mínima 1 año tras terminación de relación laboral."
