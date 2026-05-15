@@ -2,7 +2,44 @@
   country: ES
   effective_from: 2026-01-01
   effective_until: null
-  source: "Art. 101.5 LIRPF — retenciones profesionales"
+  source: "Art. 101.5 LIRPF + RIRPF Art. 95"
   data:
     standard: 0.15
     new_professional_first_3_years: 0.07
+    notes: "Aplica a actividades profesionales (médicos, abogados, arquitectos, consultores, etc.) según Sección 2ª IAE."
+
+- rule: rental_retention_rates
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 100 LIRPF + RIRPF Art. 100"
+  data:
+    urban_lease: 0.19
+    notes: "Retención sobre alquiler de inmuebles urbanos cuando el arrendador es persona física o entidad obligada."
+
+- rule: agricultural_retention_rates
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 95 RIRPF"
+  data:
+    general_agricultural: 0.02
+    livestock_fattening: 0.01
+
+- rule: capital_movable_retention_rates
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 101.4 LIRPF — rendimientos capital mobiliario"
+  data:
+    dividends_interest: 0.19
+    notes: "Dividendos, intereses, ganancias de fondos. Retención 19% por defecto."
+
+- rule: image_rights_retention
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 101.10 LIRPF + Art. 92 LIRPF"
+  data:
+    rate: 0.24
+    notes: "Cesión derechos imagen — 24%."

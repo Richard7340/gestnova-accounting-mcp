@@ -2,9 +2,94 @@
   country: ES
   effective_from: 2026-01-01
   effective_until: null
-  source: "Ley 37/1992 IVA + actualizaciones LPGE 2026"
+  source: "Ley 37/1992 IVA Art. 90-91 + actualizaciones LPGE 2026"
   data:
     general: 0.21
     reducido: 0.10
     super_reducido: 0.04
     exento: 0.0
+
+- rule: vat_categories
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Ley 37/1992 IVA Art. 91 — anexos LPGE 2026"
+  data:
+    # Maps natural categories → tipo. Ian uses this when classifying gastos/facturas.
+    consultoria: general
+    servicios_profesionales: general
+    formacion_privada: general
+    suministros_oficina: general
+    luz: general
+    agua: general
+    internet: general
+    telefonia: general
+    gasolina_combustible: general
+    hosteleria_restauracion: reducido
+    transporte_pasajeros: reducido
+    hotel: reducido
+    cultura: reducido
+    libros_papel: super_reducido
+    libros_digitales: super_reducido
+    prensa: super_reducido
+    medicamentos: super_reducido
+    pan: super_reducido
+    leche_huevos_frutas_verduras_legumbres: super_reducido
+    quesos: super_reducido
+    sanidad_privada: exento
+    educacion_reglada: exento
+    operacion_financiera: exento
+    seguro: exento
+    alquiler_vivienda: exento
+
+- rule: invoice_required_fields
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "RD 1619/2012 — Reglamento de Facturación"
+  data:
+    required:
+      - numero_correlativo
+      - serie
+      - fecha_emision
+      - emisor_nif
+      - emisor_nombre
+      - emisor_domicilio
+      - receptor_nif
+      - receptor_nombre
+      - receptor_domicilio
+      - descripcion_operacion
+      - base_imponible
+      - tipo_iva
+      - cuota_iva
+      - total
+    optional:
+      - fecha_operacion
+      - retencion_irpf
+      - regimen_especial
+
+- rule: intracommunity_rules
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 25 LIVA + Reglamento 282/2011 UE"
+  data:
+    requires_vat_number_both_parties: true
+    exempt_from_spanish_iva: true
+    must_declare_in_model_349: true
+    notes: "Operación intracomunitaria de bienes: exenta en ES, autorepercute el destinatario en su país. Servicios: inversión sujeto pasivo."
+
+- rule: reverse_charge_rules
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 84 LIVA — inversión del sujeto pasivo"
+  data:
+    applies_to:
+      - construccion_obra_inmueble
+      - chatarra
+      - residuos
+      - oro_inversion
+      - operaciones_intracomunitarias_servicios
+      - importaciones_servicios_no_residente
+    notes: "El destinatario emite/autorepercute IVA. Factura sin IVA con leyenda 'Inversión del sujeto pasivo Art. 84.Uno.2º LIVA'."
