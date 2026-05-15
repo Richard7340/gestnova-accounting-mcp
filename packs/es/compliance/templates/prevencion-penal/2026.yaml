@@ -1,0 +1,43 @@
+- rule: compliance_template
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 31 bis Código Penal (LO 1/2015) + UNE 19601:2017 Compliance Penal"
+  data:
+    document_type: prevencion-penal
+    name: "Modelo de Prevención de Delitos (Compliance Penal)"
+    description: "Sistema de gestión para prevenir comisión de delitos por persona jurídica. Exime o atenúa responsabilidad penal si está implantado y supervisado."
+    review_period_months: 24
+    notify_on_changes: true
+    legal_consequences: "Responsabilidad penal persona jurídica: multas hasta cuintuplo beneficio obtenido, suspensión actividades, intervención judicial, disolución."
+    required_fields:
+      - company_name
+      - tax_id
+      - workers_total
+      - sector_code_cnae
+      - has_compliance_officer       # compliance officer designado
+      - compliance_officer_name
+      - has_canal_denuncias          # canal de denuncias (obligatorio Ley 2/2023 Whistleblowing)
+      - external_certification_iso    # UNE 19601 / ISO 37001 si aplica
+    sections:
+      - id: identificacion_riesgos_penales
+        title: "Mapa de riesgos penales"
+        content_outline: "Identificación de los delitos a los que la organización está expuesta según su actividad. Probabilidad e impacto."
+      - id: protocolos_decisorios
+        title: "Protocolos de formación de la voluntad"
+        content_outline: "Procedimientos de adopción de decisiones que comprometan a la organización."
+      - id: gestion_recursos_economicos
+        title: "Modelo de gestión de recursos financieros"
+        content_outline: "Controles sobre flujos económicos, autorizaciones, segregación funciones."
+      - id: canal_denuncias
+        title: "Canal de denuncias (Whistleblowing — Ley 2/2023)"
+        content_outline: "Canal interno confidencial. Plazos acuse 7 días, respuesta 3 meses. Protección denunciante. OBLIGATORIO empresas 50+ empleados."
+      - id: regimen_disciplinario
+        title: "Régimen disciplinario interno"
+        content_outline: "Sistema sancionador por incumplimientos del modelo."
+      - id: verificacion_periodica
+        title: "Verificación periódica del modelo"
+        content_outline: "Auditoría interna anual + revisión 2-anual. Modificación ante cambios normativos o estructurales."
+      - id: formacion_alta_direccion
+        title: "Formación obligatoria"
+        content_outline: "Alta dirección, mandos intermedios, personal expuesto. Anual mínimo."

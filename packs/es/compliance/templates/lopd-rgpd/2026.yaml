@@ -1,0 +1,37 @@
+- rule: compliance_template
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "RGPD UE 2016/679 + LOPDGDD 3/2018"
+  data:
+    document_type: lopd-rgpd
+    name: "Política de Protección de Datos y Registro de Actividades de Tratamiento"
+    description: "Cumplimiento RGPD + LOPDGDD: política privacidad, RAT, cláusulas informativas, designación DPD si aplica."
+    review_period_months: 12
+    notify_on_changes: true
+    legal_consequences: "Sanciones AEPD hasta 20M€ o 4% facturación anual mundial (lo mayor)."
+    required_fields:
+      - company_name
+      - tax_id
+      - registered_address
+      - dpd_designated      # data protection officer designated? bool
+      - dpd_contact          # email DPD si aplica
+      - processes_special_categories  # datos salud/biométricos/etc.
+      - international_transfers
+      - websites_with_cookies
+    sections:
+      - id: politica_privacidad
+        title: "Política de privacidad"
+        content_outline: "Información sobre tratamiento de datos personales, finalidades, base jurídica, conservación, derechos del interesado, contacto DPD."
+      - id: registro_actividades_tratamiento
+        title: "Registro de Actividades de Tratamiento (RAT)"
+        content_outline: "Listado documental de todas las actividades de tratamiento: responsable, finalidades, categorías de interesados/datos, destinatarios, transferencias internacionales, plazos conservación, medidas técnicas."
+      - id: clausulas_informativas
+        title: "Cláusulas informativas para formularios / contratos"
+        content_outline: "Texto a incluir en formularios web, contratos laborales, contratos clientes/proveedores."
+      - id: brecha_seguridad_procedimiento
+        title: "Procedimiento ante brechas de seguridad"
+        content_outline: "Notificación a AEPD en 72h. Notificación a interesados si alto riesgo."
+      - id: derechos_arsuolop
+        title: "Procedimiento ARSUOLOP (Acceso/Rectificación/Supresión/Oposición/Limitación/Portabilidad)"
+        content_outline: "Cómo gestionar solicitudes de derechos. Plazo respuesta: 1 mes."

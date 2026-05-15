@@ -1,0 +1,46 @@
+- rule: compliance_template
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Ley 31/1995 PRL + RD 39/1997 Reglamento Servicios Prevención"
+  data:
+    document_type: prl-basico
+    name: "Plan de Prevención de Riesgos Laborales"
+    description: "Herramienta a través de la cual se integra la actividad preventiva de la empresa en su sistema general de gestión."
+    review_period_months: 12     # revisión anual mínima
+    notify_on_changes: true
+    legal_consequences: "Sanciones LISOS leve (40-2.045€), grave (2.046-40.985€) o muy grave (40.986-819.780€) + responsabilidades civiles y penales."
+    required_fields:
+      - company_name
+      - tax_id
+      - workers_total
+      - activity_cnae
+      - workplaces_count
+      - external_prevention_service       # Servicio Prevención Ajeno (SPA) o Propio
+      - external_service_provider          # nombre SPA si aplica
+      - mutua_collaboradora                # mutua accidentes trabajo
+    sections:
+      - id: identificacion_empresa
+        title: "Identificación de la empresa y sus características"
+        content_outline: "Datos identificativos, organigrama, áreas de actividad, centros de trabajo, características productivas."
+      - id: estructura_organizativa_prl
+        title: "Estructura organizativa de la prevención"
+        content_outline: "Modalidad preventiva: SPA, servicio propio, asunción por empresario, trabajador designado. Funciones y responsabilidades."
+      - id: evaluacion_riesgos
+        title: "Evaluación de riesgos"
+        content_outline: "Por puesto de trabajo: identificación peligros, evaluación nivel riesgo, medidas preventivas existentes."
+      - id: planificacion_actividad_preventiva
+        title: "Planificación de la actividad preventiva"
+        content_outline: "Cronograma medidas correctoras, formación, vigilancia salud, equipos protección."
+      - id: vigilancia_salud
+        title: "Vigilancia de la salud"
+        content_outline: "Reconocimientos médicos obligatorios según riesgos. Confidencialidad. Periodicidad."
+      - id: formacion_informacion
+        title: "Formación e información a trabajadores"
+        content_outline: "Programa formación PRL específica del puesto. Información Art. 18 LPRL."
+      - id: emergencia_evacuacion
+        title: "Plan de emergencia y evacuación"
+        content_outline: "Medidas en caso accidente, primeros auxilios, evacuación, contactos emergencia."
+      - id: investigacion_accidentes
+        title: "Procedimiento de investigación de accidentes"
+        content_outline: "Comunicación Delt@ / CAT365 en 5 días hábiles. Análisis causas. Medidas correctoras."

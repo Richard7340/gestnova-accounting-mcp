@@ -1,0 +1,38 @@
+- rule: compliance_template
+  country: ES
+  effective_from: 2019-05-12     # RDL 8/2019 entrada en vigor
+  effective_until: null
+  source: "Art. 34.9 Estatuto Trabajadores (RDL 8/2019)"
+  data:
+    document_type: registro-horario
+    name: "Política de Registro Horario"
+    description: "Sistema de registro diario de jornada laboral con totalización mensual y conservación 4 años."
+    review_period_months: 24
+    notify_on_changes: true
+    legal_consequences: "Infracción grave LISOS Art. 7.5 — multa 751-7.500€ por incumplimiento. Modulada por nº trabajadores afectados."
+    required_fields:
+      - company_name
+      - tax_id
+      - workers_total
+      - registration_method        # 'biometric' | 'app' | 'sheet' | 'card'
+      - registration_provider      # nombre proveedor sistema (si SaaS)
+      - access_responsible_employee_id
+    sections:
+      - id: ambito_aplicacion
+        title: "Ámbito de aplicación"
+        content_outline: "Todos los trabajadores por cuenta ajena, con excepción de los socios trabajadores que no realicen su actividad bajo dependencia."
+      - id: sistema_registro
+        title: "Sistema de registro adoptado"
+        content_outline: "Descripción del sistema: biométrico, app móvil, hoja firmada, tarjeta. Garantías de fiabilidad."
+      - id: contenido_registro
+        title: "Contenido del registro"
+        content_outline: "Hora de inicio y finalización jornada de cada trabajador. Cuando aplique, también pausas. Tiempo de presencia ≠ tiempo trabajo efectivo (excluir descansos no computables)."
+      - id: registro_horas_extra
+        title: "Registro de horas extraordinarias"
+        content_outline: "Identificación separada de horas extra. Cómputo no superior a 80h/año (Art. 35.2 ET)."
+      - id: conservacion
+        title: "Conservación y accesibilidad"
+        content_outline: "4 años. Disponible para trabajadores, representantes legales (RLT), Inspección de Trabajo."
+      - id: derechos_trabajador
+        title: "Derecho a información del trabajador"
+        content_outline: "Trabajador puede consultar su registro horario. Resumen mensual entregado obligatoriamente."

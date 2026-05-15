@@ -1,0 +1,35 @@
+- rule: compliance_template
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP) + Reglamento"
+  data:
+    document_type: lfpdppp
+    name: "Aviso de Privacidad + Sistema de Protección de Datos"
+    description: "Cumplimiento LFPDPPP: aviso de privacidad integral, simplificado y corto + medidas de seguridad."
+    review_period_months: 12
+    notify_on_changes: true
+    legal_consequences: "Sanciones INAI hasta 320,000 UMAs por violaciones a la ley + agravantes hasta el doble (~3,600M MXN)."
+    required_fields:
+      - company_name
+      - rfc
+      - registered_address
+      - data_controller_contact
+      - dpo_designated
+      - cookies_used
+      - data_categories_processed
+      - international_transfers
+      - websites
+    sections:
+      - id: aviso_privacidad_integral
+        title: "Aviso de privacidad integral"
+        content_outline: "Identidad del responsable, finalidades primarias y secundarias, datos recabados, transferencias, derechos ARCO, mecanismos para limitar uso/divulgación."
+      - id: aviso_privacidad_simplificado
+        title: "Aviso de privacidad simplificado"
+        content_outline: "Versión resumida con remisión al aviso integral. Para formularios físicos/digitales."
+      - id: derechos_arco
+        title: "Procedimiento Derechos ARCO"
+        content_outline: "Acceso, Rectificación, Cancelación, Oposición. Plazo respuesta: 20 días hábiles + 15 ejecución."
+      - id: medidas_seguridad
+        title: "Medidas de seguridad administrativas, físicas y técnicas"
+        content_outline: "Documento de seguridad: políticas, controles acceso, cifrado, respaldos, gestión incidentes."

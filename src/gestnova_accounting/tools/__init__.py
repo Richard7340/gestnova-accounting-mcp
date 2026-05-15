@@ -40,6 +40,12 @@ from .fiscal_models import (
     PrepareModel200Tool,
     GetFiscalCalendarTool,
 )
+from .compliance import (
+    GetApplicableComplianceDocsTool,
+    GetComplianceTemplateTool,
+    CheckComplianceStatusTool,
+    DetectComplianceUpdatesTool,
+)
 
 
 class PingTool(BaseTool):
@@ -82,4 +88,8 @@ def get_all_tools() -> list[BaseTool]:
         PrepareModel130Tool(),
         PrepareModel200Tool(),
         GetFiscalCalendarTool(),
+        GetApplicableComplianceDocsTool(),
+        GetComplianceTemplateTool(),
+        CheckComplianceStatusTool(),
+        DetectComplianceUpdatesTool(),
     ]

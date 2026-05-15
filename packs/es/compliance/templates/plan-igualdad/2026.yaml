@@ -1,0 +1,45 @@
+- rule: compliance_template
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Real Decreto-ley 6/2019 + RD 901/2020 + Ley Orgánica 3/2007 igualdad"
+  data:
+    document_type: plan-igualdad
+    name: "Plan de Igualdad"
+    description: "Conjunto ordenado de medidas para alcanzar la igualdad de trato y oportunidades entre mujeres y hombres."
+    review_period_months: 48     # vigencia máxima 4 años, revisión bi-anual
+    notify_on_changes: true
+    applicability_threshold:
+      workers_min: 50
+    legal_consequences: "Sanciones grave hasta 7.500€ o muy grave hasta 225.018€ (RD 5/2000 LISOS, modif. 2022)."
+    required_fields:
+      - company_name
+      - tax_id
+      - workers_total
+      - workers_men
+      - workers_women
+      - commission_negotiating_members
+      - registered_in_regcon          # REGCON registry
+      - audit_diagnostic_completed
+    sections:
+      - id: diagnostico
+        title: "Diagnóstico de situación"
+        content_outline: "Análisis cuantitativo y cualitativo de la situación de mujeres y hombres en cada nivel jerárquico, área funcional, retribución, formación, conciliación, etc."
+      - id: medidas
+        title: "Medidas concretas"
+        content_outline: "Conjunto de medidas adoptadas en cada área: selección, formación, promoción, retribución, conciliación, prevención acoso, etc."
+      - id: objetivos_cuantitativos
+        title: "Objetivos cuantitativos y cualitativos"
+        content_outline: "Metas medibles por cada área. Indicadores de seguimiento."
+      - id: calendario
+        title: "Calendario de actuaciones"
+        content_outline: "Cronograma con responsables."
+      - id: seguimiento_evaluacion
+        title: "Sistema de seguimiento, evaluación y revisión periódica"
+        content_outline: "Comisión de seguimiento, periodicidad, métricas."
+      - id: protocolo_acoso
+        title: "Protocolo contra acoso sexual y por razón de sexo"
+        content_outline: "Procedimiento confidencial de actuación ante denuncias."
+      - id: registro_retributivo
+        title: "Registro retributivo y auditoría retributiva"
+        content_outline: "Obligatorio empresas 50+: registro promedios desglosados sexo + auditoría si Plan Igualdad obligatorio."

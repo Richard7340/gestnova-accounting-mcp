@@ -1,0 +1,43 @@
+# Compliance applicability rules for ES — which documents apply based on
+# sector + headcount + company structure. Updated yearly based on legislation.
+
+- rule: compliance_applicability
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "RGPD 2016/679 + RD 901/2020 + Ley 31/1995 PRL + Art. 31 bis CP + Art. 34.9 ET"
+  data:
+    rules:
+      - if:
+          workers_min: 1
+        always_required:
+          - lopd-rgpd
+          - prl-basico
+          - registro-horario
+        reason: "RGPD aplica a todo tratamiento de datos. PRL obligatorio toda empresa con trabajadores (Ley 31/1995). Registro horario obligatorio desde 2019 (RDL 8/2019)."
+
+      - if:
+          workers_min: 6
+        adds:
+          - delegado-prevencion
+        reason: "Empresas de 6 a 30 empleados deben designar Delegado de Prevención (Art. 35 Ley 31/1995)."
+
+      - if:
+          workers_min: 50
+        adds:
+          - plan-igualdad
+          - comite-empresa
+        reason: "Plan de Igualdad obligatorio para empresas con 50+ empleados (RD 901/2020). Comité de Empresa obligatorio."
+
+      - if:
+          sector_in: [financiero, sanitario, energetico, telecom, alimentacion, transporte]
+        adds:
+          - prevencion-penal
+        reason: "Sectores regulados o de mayor exposición — Modelo de prevención penal (Art. 31 bis CP) altamente recomendable."
+
+      - if:
+          workers_min: 250
+        adds:
+          - prevencion-penal
+          - estado-info-no-financiera
+        reason: "Empresas >250 empleados: prevención penal altamente recomendable + Estado de Información No Financiera (Ley 11/2018)."

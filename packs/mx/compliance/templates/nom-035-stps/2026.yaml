@@ -1,0 +1,39 @@
+- rule: compliance_template
+  country: MX
+  effective_from: 2019-10-23     # NOM-035 nivel 1 entrada vigor
+  effective_until: null
+  source: "NOM-035-STPS-2018 — Factores de Riesgo Psicosocial en el Trabajo"
+  data:
+    document_type: nom-035-stps
+    name: "Programa de Identificación y Análisis de Factores de Riesgo Psicosocial"
+    description: "Identificar, analizar y prevenir factores de riesgo psicosocial. Promover entorno organizacional favorable."
+    review_period_months: 24      # cuestionario cada 2 años mínimo
+    notify_on_changes: true
+    legal_consequences: "Sanciones STPS de 250 a 5,000 UMAs (~70k - 1.4M MXN) según severidad."
+    required_fields:
+      - company_name
+      - rfc
+      - workers_total
+      - workplaces_count
+      - psychosocial_committee_designated
+      - last_questionnaire_date
+      - emergency_psychological_support_provided
+    sections:
+      - id: politica_factores_riesgo
+        title: "Política de prevención de factores de riesgo psicosocial y prevención de violencia laboral"
+        content_outline: "Declaración formal del compromiso de la organización. Difusión a todos los trabajadores."
+      - id: identificacion_analisis
+        title: "Identificación y análisis"
+        content_outline: "Aplicación cuestionarios Guía Referencia II/III/V según número trabajadores. Análisis resultados por puesto y centro."
+      - id: medidas_control
+        title: "Medidas de control"
+        content_outline: "Cuando se identifique riesgo medio/alto/muy alto, medidas correctoras: ajustar cargas, comunicar, conciliación, prevención violencia."
+      - id: practicas_opuestas_violencia
+        title: "Prácticas opuestas al entorno organizacional favorable y violencia laboral"
+        content_outline: "Procedimiento atención denuncias. Confidencialidad. Sin represalias."
+      - id: registros
+        title: "Registros y conservación"
+        content_outline: "Registros de cuestionarios, análisis, medidas. Conservación 1 año mínimo. Acceso autoridad laboral."
+      - id: difusion_capacitacion
+        title: "Difusión y capacitación"
+        content_outline: "Información a trabajadores sobre política y procedimientos. Capacitación específica nivel 3."

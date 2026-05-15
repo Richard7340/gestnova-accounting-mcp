@@ -1,0 +1,34 @@
+- rule: compliance_applicability
+  country: MX
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "LFPDPPP + NOM-035-STPS-2018 + LFT Art. 422-425 + Ley General de Protección de Datos del Sector Público"
+  data:
+    rules:
+      - if:
+          workers_min: 1
+        always_required:
+          - lfpdppp
+          - nom-035-stps
+          - reglamento-interior-trabajo
+        reason: "LFPDPPP obligatorio para todo tratamiento de datos personales. NOM-035 (factores riesgo psicosocial) aplica desde 1 empleado. RIT obligatorio si aplica convenio o reglamento empresa."
+
+      - if:
+          workers_min: 16
+        adds:
+          - nom-035-stps-nivel2
+          - comision-seguridad-higiene
+        reason: "NOM-035 nivel 2 (15-50 empleados) requiere análisis e identificación factores riesgo + ambiente organizacional favorable. Comisión Seguridad e Higiene obligatoria 1+ trabajadores."
+
+      - if:
+          workers_min: 51
+        adds:
+          - nom-035-stps-nivel3
+          - reparto-utilidades-ptu
+        reason: "NOM-035 nivel 3 (50+) requiere todo lo anterior + evaluación periódica. PTU (Participación Trabajadores Utilidades) — Art. 117 LFT, 10% utilidad fiscal."
+
+      - if:
+          sector_in: [financiero, fintech, salud, seguros]
+        adds:
+          - prevencion-lavado-dinero
+        reason: "Sectores vulnerables a lavado de dinero (LFPIORPI). Programa de cumplimiento obligatorio para actividades vulnerables."
