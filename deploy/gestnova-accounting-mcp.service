@@ -1,0 +1,14 @@
+[Unit]
+Description=Gestnova Accounting MCP (HTTP)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/Documents/New project/gestnova-accounting-mcp
+ExecStart=%h/Documents/New project/gestnova-accounting-mcp/scripts/run-mcp-http.sh
+Restart=always
+RestartSec=5
+Environment=PORT=8014
+
+[Install]
+WantedBy=default.target
