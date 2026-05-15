@@ -17,6 +17,12 @@ from .leave import (
     GetVacationBalanceTool,
     GetLeaveCalendarTool,
 )
+from .meta import (
+    LookupLegalReferenceTool,
+    GetApplicableRulesTool,
+    ListSupportedCountriesTool,
+    GetCountryFiscalProfileTool,
+)
 
 
 class PingTool(BaseTool):
@@ -42,4 +48,8 @@ def get_all_tools() -> list[BaseTool]:
         CheckLeaveEntitlementTool(),
         GetVacationBalanceTool(),
         GetLeaveCalendarTool(),
+        LookupLegalReferenceTool(),
+        GetApplicableRulesTool(),
+        ListSupportedCountriesTool(),
+        GetCountryFiscalProfileTool(),
     ]
