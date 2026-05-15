@@ -23,6 +23,15 @@ from .meta import (
     ListSupportedCountriesTool,
     GetCountryFiscalProfileTool,
 )
+from .invoice import (
+    CalculateInvoiceTool,
+    CalculateIVATool,
+    GetApplicableVATRateTool,
+    ValidateInvoiceDataTool,
+    ClassifyExpenseTool,
+    CheckDietaExemptTool,
+    ApplyKilometrageRateTool,
+)
 
 
 class PingTool(BaseTool):
@@ -52,4 +61,11 @@ def get_all_tools() -> list[BaseTool]:
         GetApplicableRulesTool(),
         ListSupportedCountriesTool(),
         GetCountryFiscalProfileTool(),
+        CalculateInvoiceTool(),
+        CalculateIVATool(),
+        GetApplicableVATRateTool(),
+        ValidateInvoiceDataTool(),
+        ClassifyExpenseTool(),
+        CheckDietaExemptTool(),
+        ApplyKilometrageRateTool(),
     ]
