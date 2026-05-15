@@ -19,14 +19,15 @@ class LookupLegalReferenceTool(BaseTool):
     }
 
     async def execute(self, args: dict[str, Any]) -> dict[str, Any]:
-        q = args["query"].lower()
+        # Tokenize query so "IRPF brackets" matches "irpf_brackets" + source text.
+        tokens = [t for t in args["query"].lower().replace("_", " ").split() if t]
         matches = []
         for (c, k), rules in get_lookup()._rules.items():
             if c != args["country"]:
                 continue
             for r in rules:
-                hay = f"{r.rule} {r.source}".lower()
-                if q in hay:
+                hay = f"{r.rule} {r.source}".lower().replace("_", " ")
+                if all(tok in hay for tok in tokens):
                     matches.append({
                         "rule": r.rule,
                         "effective_from": str(r.effective_from),
