@@ -1,0 +1,54 @@
+- rule: max_daily_hours
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 34.3 Estatuto Trabajadores"
+  data:
+    hours: 9
+    notes: "Máximo 9h ordinarias salvo distribución irregular o convenio."
+
+- rule: max_weekly_hours
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 34.1 Estatuto Trabajadores"
+  data:
+    hours: 40
+    averaged_over_period: "anual"
+    notes: "40h semanales en cómputo anual."
+
+- rule: max_overtime_yearly
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 35.2 Estatuto Trabajadores"
+  data:
+    hours: 80
+    notes: "Máximo 80h extras al año, salvo convenio que las limite más."
+
+- rule: minimum_rest_between_shifts
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 34.3 ET"
+  data:
+    hours: 12
+
+- rule: minimum_weekly_rest
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 37.1 ET"
+  data:
+    hours: 36
+    notes: "Día y medio ininterrumpido (típicamente sábado tarde + domingo)."
+
+- rule: time_record_obligation
+  country: ES
+  effective_from: 2019-05-12
+  effective_until: null
+  source: "Art. 34.9 ET (RDL 8/2019)"
+  data:
+    obligatory: true
+    retention_years: 4
+    notes: "Registro horario diario obligatorio. Conservación 4 años. Acceso trabajador/RLT/Inspección."

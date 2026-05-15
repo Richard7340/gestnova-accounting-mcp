@@ -1,0 +1,77 @@
+- rule: vacation_days_minimum
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 38.1 Estatuto Trabajadores — mínimo 30 días naturales"
+  data:
+    natural_days: 30
+    working_days_equivalent: 22
+
+- rule: leave_reasons
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 37.3 Estatuto Trabajadores"
+  data:
+    matrimonio:
+      days: 15
+      unit: natural
+      legal_ref: "Art. 37.3.a ET"
+      notes: "15 días naturales desde el día del hecho causante."
+    fallecimiento_conyuge_padres_hijos:
+      days: 2
+      days_if_displacement: 4
+      unit: working
+      legal_ref: "Art. 37.3.b ET (1er grado consanguinidad o afinidad)"
+    fallecimiento_hermanos_abuelos_nietos:
+      days: 1
+      days_if_displacement: 2
+      unit: working
+      legal_ref: "Art. 37.3.b ET (2do grado)"
+    accidente_enfermedad_grave_hospitalizacion:
+      days: 2
+      days_if_displacement: 4
+      unit: working
+      legal_ref: "Art. 37.3.b ET (hasta 2do grado)"
+    mudanza:
+      days: 1
+      unit: working
+      legal_ref: "Art. 37.3.c ET — domicilio habitual"
+    deber_publico_personal:
+      days: null
+      unit: indispensable_time
+      legal_ref: "Art. 37.3.d ET"
+    funciones_sindicales:
+      days: null
+      unit: per_convenio
+      legal_ref: "Art. 37.3.e ET + LOLS"
+    examenes_prenatales_preparacion_parto:
+      days: null
+      unit: indispensable_time
+      legal_ref: "Art. 37.3.f ET"
+    lactancia:
+      hours_per_day: 1
+      max_age_months: 9
+      legal_ref: "Art. 37.4 ET"
+      notes: "Opcional acumular en jornadas completas o reducir jornada 30 min."
+    nacimiento_adopcion:
+      weeks: 16
+      legal_ref: "Art. 48.4 ET — permiso parental"
+      notes: "Aplica a ambos progenitores. 6 primeras semanas obligatorias e ininterrumpidas."
+
+- rule: national_holidays_default
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: 2026-12-31
+  source: "Calendario laboral 2026 (BOE)"
+  data:
+    - {date: "2026-01-01", name: "Año Nuevo"}
+    - {date: "2026-01-06", name: "Epifanía"}
+    - {date: "2026-04-03", name: "Viernes Santo"}
+    - {date: "2026-05-01", name: "Día del Trabajo"}
+    - {date: "2026-08-15", name: "Asunción"}
+    - {date: "2026-10-12", name: "Fiesta Nacional"}
+    - {date: "2026-11-02", name: "Todos los Santos (lunes siguiente)"}
+    - {date: "2026-12-06", name: "Constitución"}
+    - {date: "2026-12-08", name: "Inmaculada"}
+    - {date: "2026-12-25", name: "Navidad"}

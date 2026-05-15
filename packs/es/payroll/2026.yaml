@@ -1,0 +1,104 @@
+# Spain — Payroll legal pack for fiscal year 2026.
+# Sources cited per rule.
+
+- rule: irpf_brackets
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Ley 35/2006 LIRPF Art. 63 — escala general 2026 (PGE 2026)"
+  data:
+    # State scale brackets (estatal). Most autonomous communities mirror,
+    # full autonomous adjustment to be added per-CCAA in future work.
+    - bracket: [0, 12450]
+      rate: 0.19
+    - bracket: [12450, 20200]
+      rate: 0.24
+    - bracket: [20200, 35200]
+      rate: 0.30
+    - bracket: [35200, 60000]
+      rate: 0.37
+    - bracket: [60000, 300000]
+      rate: 0.45
+    - bracket: [300000, null]
+      rate: 0.47
+
+- rule: irpf_personal_minimum
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 57 LIRPF"
+  data:
+    taxpayer: 5550
+    children_first: 2400
+    children_second: 2700
+    children_third: 4000
+    children_fourth_plus: 4500
+    over_65: 1150
+    over_75: 1400
+
+- rule: ss_employee_rates
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Orden PCM/.../2025 — Cotización Régimen General 2026"
+  data:
+    common_contingencies: 0.047
+    unemployment: 0.0155
+    professional_training: 0.001
+    mei: 0.001
+    total: 0.0645
+
+- rule: ss_employer_rates
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Orden PCM/.../2025 — Cotización Régimen General 2026"
+  data:
+    common_contingencies: 0.236
+    unemployment: 0.055
+    professional_training: 0.006
+    fogasa: 0.002
+    mei: 0.005
+    work_accident_default: 0.015
+    total_default: 0.319
+
+- rule: ss_contribution_bases
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Orden PCM/.../2025 — Bases mín/máx 2026"
+  data:
+    monthly_minimum: 1184.00
+    monthly_maximum: 4909.50
+
+- rule: exempt_concepts
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 9 RIRPF + Art. 42 LIRPF"
+  data:
+    plus_transport:
+      max_monthly: null
+      notes: "Plus distancia/transporte. Exento si justificado y vinculado al desplazamiento al centro."
+    dieta_comida_nacional:
+      max_daily: 26.67
+      notes: "Sin pernoctación. Exceso tributa."
+    dieta_pernoctacion_nacional:
+      max_daily: 53.34
+      notes: "Con pernoctación. Exceso tributa."
+    dieta_comida_extranjero:
+      max_daily: 48.08
+    dieta_pernoctacion_extranjero:
+      max_daily: 91.35
+    kilometraje:
+      rate_per_km: 0.26
+      notes: "Sin justificar más allá de km recorridos."
+    ticket_restaurante:
+      max_daily: 11.0
+      notes: "Cheque/tarjeta restaurante exenta hasta 11€/día laborable."
+    seguro_medico_familiar:
+      max_yearly_per_person: 500
+      notes: "Incluido pareja e hijos. 1500€ si discapacidad."
+    formacion:
+      max_monthly: null
+      notes: "Exenta si vinculada al puesto."

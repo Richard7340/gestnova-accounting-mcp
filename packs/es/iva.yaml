@@ -1,0 +1,10 @@
+- rule: vat_rates
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Ley 37/1992 IVA + actualizaciones LPGE 2026"
+  data:
+    general: 0.21
+    reducido: 0.10
+    super_reducido: 0.04
+    exento: 0.0

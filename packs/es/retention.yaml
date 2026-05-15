@@ -1,0 +1,8 @@
+- rule: professional_retention_rates
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Art. 101.5 LIRPF — retenciones profesionales"
+  data:
+    standard: 0.15
+    new_professional_first_3_years: 0.07
