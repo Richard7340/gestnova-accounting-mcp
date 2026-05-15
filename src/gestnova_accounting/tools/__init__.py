@@ -32,6 +32,14 @@ from .invoice import (
     CheckDietaExemptTool,
     ApplyKilometrageRateTool,
 )
+from .fiscal_models import (
+    PrepareModel303Tool,
+    PrepareModel111Tool,
+    PrepareModel190Tool,
+    PrepareModel130Tool,
+    PrepareModel200Tool,
+    GetFiscalCalendarTool,
+)
 
 
 class PingTool(BaseTool):
@@ -68,4 +76,10 @@ def get_all_tools() -> list[BaseTool]:
         ClassifyExpenseTool(),
         CheckDietaExemptTool(),
         ApplyKilometrageRateTool(),
+        PrepareModel303Tool(),
+        PrepareModel111Tool(),
+        PrepareModel190Tool(),
+        PrepareModel130Tool(),
+        PrepareModel200Tool(),
+        GetFiscalCalendarTool(),
     ]
