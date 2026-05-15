@@ -1,0 +1,36 @@
+[project]
+name = "gestnova-accounting"
+version = "0.1.0"
+description = "MCP server for accounting + legal rules engine (multi-jurisdiction)"
+requires-python = ">=3.11"
+dependencies = [
+    "mcp>=0.9.0",
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.27.0",
+    "pydantic>=2.5.0",
+    "ruamel.yaml>=0.18.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "hypothesis>=6.95.0",
+    "ruff>=0.3.0",
+    "mypy>=1.8.0",
+]
+
+[project.scripts]
+gestnova-accounting-mcp = "gestnova_accounting.server:main"
+gestnova-accounting-http = "gestnova_accounting.http_server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gestnova_accounting"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
