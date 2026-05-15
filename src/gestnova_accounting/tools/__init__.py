@@ -7,6 +7,11 @@ from .payroll import (
     ValidatePayrollConceptExemptionTool,
     GeneratePayslipTool,
 )
+from .time_tracking import (
+    ClockInLegalTool,
+    GetJornadaStatusTool,
+    GetOvertimeBalanceTool,
+)
 
 
 class PingTool(BaseTool):
@@ -26,4 +31,7 @@ def get_all_tools() -> list[BaseTool]:
         SimulatePayrollChangeTool(),
         ValidatePayrollConceptExemptionTool(),
         GeneratePayslipTool(),
+        ClockInLegalTool(),
+        GetJornadaStatusTool(),
+        GetOvertimeBalanceTool(),
     ]
