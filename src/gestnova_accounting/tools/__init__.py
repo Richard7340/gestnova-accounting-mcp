@@ -12,6 +12,11 @@ from .time_tracking import (
     GetJornadaStatusTool,
     GetOvertimeBalanceTool,
 )
+from .leave import (
+    CheckLeaveEntitlementTool,
+    GetVacationBalanceTool,
+    GetLeaveCalendarTool,
+)
 
 
 class PingTool(BaseTool):
@@ -34,4 +39,7 @@ def get_all_tools() -> list[BaseTool]:
         ClockInLegalTool(),
         GetJornadaStatusTool(),
         GetOvertimeBalanceTool(),
+        CheckLeaveEntitlementTool(),
+        GetVacationBalanceTool(),
+        GetLeaveCalendarTool(),
     ]
