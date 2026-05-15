@@ -1,0 +1,31 @@
+- rule: model_200
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Orden HFP/.../2024 — Modelo 200 AEAT (Impuesto sobre Sociedades)"
+  data:
+    name: "Impuesto Sociedades — Modelo 200"
+    frequency: anual
+    deadline_default: "25 días posteriores a los 6 meses tras cierre ejercicio"
+    rates:
+      general: 0.25
+      pyme_nueva_creacion: 0.15        # primeros 2 ejercicios con BI positiva
+      micro_pyme: 0.23                  # ingresos < 1M €
+      cooperativas_protegidas: 0.20
+      entidades_sin_animo_lucro: 0.10
+    sections:
+      base_imponible:
+        casillas:
+          "00501": {label: "Resultado contable antes de IS"}
+          "00518": {label: "Total ajustes positivos al resultado"}
+          "00519": {label: "Total ajustes negativos al resultado"}
+          "00550": {label: "Base imponible antes compensación BIN"}
+          "00552": {label: "Base imponible"}
+      cuota:
+        casillas:
+          "00558": {label: "Cuota íntegra previa", source: "552 × tipo aplicable"}
+          "00582": {label: "Cuota líquida positiva"}
+      liquidacion:
+        casillas:
+          "00599": {label: "Pagos fraccionados realizados"}
+          "00621": {label: "Líquido diferencial", source: "582 - 599 - retenciones"}

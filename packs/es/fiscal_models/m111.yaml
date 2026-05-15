@@ -1,0 +1,33 @@
+- rule: model_111
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Orden HFP/.../2024 — Modelo 111 AEAT (Retenciones IRPF trimestral)"
+  data:
+    name: "Retenciones IRPF — Modelo 111"
+    frequency: trimestral
+    deadlines:
+      Q1: 2026-04-20
+      Q2: 2026-07-20
+      Q3: 2026-10-20
+      Q4: 2027-01-20
+    sections:
+      rendimientos_trabajo:
+        casillas:
+          "01": {label: "Núm. perceptores rendimientos trabajo"}
+          "02": {label: "Importe percepciones rendimientos trabajo"}
+          "03": {label: "Importe retenciones rendimientos trabajo"}
+      rendimientos_actividades_economicas:
+        casillas:
+          "04": {label: "Núm. perceptores actividades económicas"}
+          "05": {label: "Importe percepciones actividades económicas"}
+          "06": {label: "Importe retenciones actividades económicas"}
+      rendimientos_premios:
+        casillas:
+          "07": {label: "Núm. perceptores premios"}
+          "08": {label: "Importe percepciones premios"}
+          "09": {label: "Importe retenciones premios"}
+      total:
+        casillas:
+          "28": {label: "Total importe retenciones", source: "03 + 06 + 09 + …"}
+          "29": {label: "Resultado a ingresar"}

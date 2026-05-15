@@ -1,0 +1,25 @@
+- rule: model_130
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Orden HFP/.../2024 — Modelo 130 AEAT (IRPF Pago fraccionado actividades económicas)"
+  data:
+    name: "Pago fraccionado IRPF autónomos — Modelo 130"
+    frequency: trimestral
+    applies_to: "autónomos en estimación directa (no en módulos)"
+    rate: 0.20
+    deadlines:
+      Q1: 2026-04-20
+      Q2: 2026-07-20
+      Q3: 2026-10-20
+      Q4: 2027-01-30
+    sections:
+      actividades_economicas:
+        casillas:
+          "01": {label: "Ingresos computables del periodo"}
+          "02": {label: "Gastos deducibles del periodo"}
+          "03": {label: "Rendimiento neto", source: "01 - 02"}
+          "04": {label: "20% sobre rendimiento neto", source: "03 × 0.20"}
+          "05": {label: "Pagos fraccionados anteriores ejercicio"}
+          "06": {label: "Retenciones soportadas ejercicio"}
+          "07": {label: "Resultado", source: "04 - 05 - 06"}

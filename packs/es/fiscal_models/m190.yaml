@@ -1,0 +1,23 @@
+- rule: model_190
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Orden HFP/.../2024 — Modelo 190 AEAT (Resumen anual retenciones)"
+  data:
+    name: "Resumen anual retenciones IRPF — Modelo 190"
+    frequency: anual
+    deadline: 2027-01-31
+    sections:
+      resumen:
+        casillas:
+          "01": {label: "Núm. total perceptores"}
+          "02": {label: "Importe íntegro percibido"}
+          "03": {label: "Importe retenciones"}
+      claves_perceptor:
+        # Cada línea declarada lleva una clave (A=trabajo, B=jubilación, G=actividades pro, etc.)
+        clave_A: "Rendimientos del trabajo"
+        clave_B: "Pensiones y haberes pasivos"
+        clave_G: "Rendimientos actividades profesionales"
+        clave_H: "Rendimientos actividades agrícolas"
+        clave_I: "Rendimientos actividades empresariales (módulos)"
+        clave_J: "Premios"

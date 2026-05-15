@@ -1,0 +1,37 @@
+- rule: model_303
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "Orden HFP/.../2024 — Modelo 303 AEAT (Autoliquidación trimestral IVA)"
+  data:
+    name: "Autoliquidación IVA — Modelo 303"
+    frequency: trimestral
+    deadlines:
+      Q1: 2026-04-20
+      Q2: 2026-07-20
+      Q3: 2026-10-20
+      Q4: 2027-01-30
+    sections:
+      iva_devengado:
+        # Base + cuota por tipo. Casillas reales del modelo 303 (resumen).
+        casillas:
+          "01": {label: "Base imponible 4%", source: "ventas/ingresos super-reducido"}
+          "03": {label: "Cuota IVA 4%", source: "01 × 0.04"}
+          "04": {label: "Base imponible 10%", source: "ventas/ingresos reducido"}
+          "06": {label: "Cuota IVA 10%", source: "04 × 0.10"}
+          "07": {label: "Base imponible 21%", source: "ventas/ingresos general"}
+          "09": {label: "Cuota IVA 21%", source: "07 × 0.21"}
+          "27": {label: "Total cuotas IVA devengado", source: "03 + 06 + 09 + recargos"}
+      iva_deducible:
+        casillas:
+          "28": {label: "Base operaciones interiores corrientes", source: "gastos corrientes"}
+          "29": {label: "Cuota soportada operaciones interiores corrientes"}
+          "30": {label: "Base operaciones interiores bienes de inversión", source: "inmovilizado"}
+          "31": {label: "Cuota soportada inversión"}
+          "32": {label: "Base operaciones intracomunitarias corrientes"}
+          "33": {label: "Cuota soportada intracomunitaria"}
+          "45": {label: "Total cuotas IVA deducible", source: "29 + 31 + 33 + ..."}
+      resultado:
+        casillas:
+          "46": {label: "Resultado régimen general", source: "27 - 45"}
+          "71": {label: "Resultado liquidación", source: "46 + ajustes"}
