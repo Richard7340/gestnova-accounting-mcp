@@ -1,6 +1,12 @@
 """Tool registry."""
 from typing import Any
 from ._base import BaseTool
+from .payroll import (
+    CalculatePayrollTool,
+    SimulatePayrollChangeTool,
+    ValidatePayrollConceptExemptionTool,
+    GeneratePayslipTool,
+)
 
 
 class PingTool(BaseTool):
@@ -14,4 +20,10 @@ class PingTool(BaseTool):
 
 
 def get_all_tools() -> list[BaseTool]:
-    return [PingTool()]
+    return [
+        PingTool(),
+        CalculatePayrollTool(),
+        SimulatePayrollChangeTool(),
+        ValidatePayrollConceptExemptionTool(),
+        GeneratePayslipTool(),
+    ]
