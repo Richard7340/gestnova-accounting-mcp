@@ -1,0 +1,9 @@
+- rule: regional_holidays
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: 2026-12-31
+  source: "Calendario laboral Comunidad de Madrid 2026 (BOCM)"
+  data:
+    - {date: "2026-05-02", name: "Dos de Mayo (CAM)"}
+    - {date: "2026-05-15", name: "San Isidro (Madrid capital)"}
+    - {date: "2026-11-09", name: "Almudena (Madrid capital)"}

@@ -47,14 +47,20 @@ def compute_payroll_es(
     monthly_base: Decimal,
     extras: list[dict[str, Any]] | None = None,
     on_date: date,
+    region: str | None = None,
 ) -> dict[str, Any]:
     """Full ES payroll computation for one month.
 
     `extras`: list of {code, amount, exempt: bool}. Exempt extras add to bruto
     but not to taxable base or SS base.
+
+    `region`: optional CCAA code (e.g. 'madrid', 'cataluna'). When provided,
+    the IRPF brackets are looked up with regional overlay (falls back to
+    national if no region-specific rule exists). SS rates are common to all
+    of Spain so they're always looked up nationally.
     """
     extras = extras or []
-    irpf_rule = lookup.get("ES", "irpf_brackets", on_date)
+    irpf_rule = lookup.get("ES", "irpf_brackets", on_date, region=region)
     ss_rule = lookup.get("ES", "ss_employee_rates", on_date)
 
     taxable_extras = sum(

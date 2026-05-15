@@ -1,0 +1,10 @@
+- rule: regional_holidays
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: 2026-12-31
+  source: "Calendari laboral Catalunya 2026 (DOGC)"
+  data:
+    - {date: "2026-04-06", name: "Lunes de Pascua"}
+    - {date: "2026-06-24", name: "Sant Joan"}
+    - {date: "2026-09-11", name: "Diada Nacional de Catalunya"}
+    - {date: "2026-12-26", name: "Sant Esteve"}

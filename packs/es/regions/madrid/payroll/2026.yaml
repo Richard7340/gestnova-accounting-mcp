@@ -1,0 +1,26 @@
+# Comunidad de Madrid — Payroll overlay 2026
+# Madrid aplica la mayor bajada autonómica de IRPF en España. Los porcentajes
+# aquí son la ESCALA AGREGADA (estatal + autonómico Madrid) — para simplicidad
+# de Plan 7 mantenemos el modelo "una escala total" con overlay por región.
+#
+# Source: BOCM — Ley 4/2025 de medidas fiscales Comunidad de Madrid (referencia).
+# Para producción: verificar contra ATC Madrid + gestoría profesional.
+
+- rule: irpf_brackets
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "BOCM — Escala autonómica Madrid 2026 (deflactación + bajada general)"
+  data:
+    - bracket: [0, 12450]
+      rate: 0.18         # Madrid: 18% vs nacional supletoria 19%
+    - bracket: [12450, 20200]
+      rate: 0.23
+    - bracket: [20200, 35200]
+      rate: 0.29
+    - bracket: [35200, 60000]
+      rate: 0.36
+    - bracket: [60000, 300000]
+      rate: 0.44
+    - bracket: [300000, null]
+      rate: 0.46

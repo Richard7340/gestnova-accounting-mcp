@@ -1,0 +1,28 @@
+# Cataluña — Payroll overlay 2026
+# Cataluña tiene la escala IRPF MÁS ALTA en tramos superiores de España.
+# Mantenemos modelo simplificado "escala agregada total" con overlay.
+#
+# Source: DOGC — Decret Llei 2/2025 + actualización LPGE. Verificar producción.
+
+- rule: irpf_brackets
+  country: ES
+  effective_from: 2026-01-01
+  effective_until: null
+  source: "DOGC — Escala autonómica Cataluña 2026 (incremento tramos altos)"
+  data:
+    - bracket: [0, 12450]
+      rate: 0.215         # Cataluña: tramo más alto incluso en base
+    - bracket: [12450, 17707]
+      rate: 0.24
+    - bracket: [17707, 33007]
+      rate: 0.27
+    - bracket: [33007, 53407]
+      rate: 0.33
+    - bracket: [53407, 90000]
+      rate: 0.39
+    - bracket: [90000, 120000]
+      rate: 0.46
+    - bracket: [120000, 175000]
+      rate: 0.49
+    - bracket: [175000, null]
+      rate: 0.50          # Tramo máximo más alto que Madrid

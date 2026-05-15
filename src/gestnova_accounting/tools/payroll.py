@@ -37,12 +37,15 @@ class CalculatePayrollTool(BaseTool):
     name = "calculatePayroll"
     description = (
         "Compute payroll for an employee in the given period using the country's "
-        "current legal rules (IRPF/ISR brackets, SS/IMSS rates, exempt concepts)."
+        "current legal rules (IRPF/ISR brackets, SS/IMSS rates, exempt concepts). "
+        "Optionally pass `region` (e.g. 'madrid', 'cataluna') to apply the CCAA/state "
+        "fiscal overlay. Falls back to national rules when region is unknown."
     )
     input_schema = {
         "type": "object",
         "properties": {
             "country": {"type": "string", "enum": ["ES", "MX"]},
+            "region": {"type": "string", "description": "Optional CCAA (ES) or State (MX) code: 'madrid', 'cataluna', 'cdmx', etc."},
             "monthlyBase": {"type": "string", "description": "Monthly cotization base as decimal string"},
             "periodStart": {"type": "string", "format": "date"},
             "periodEnd": {"type": "string", "format": "date"},
@@ -65,15 +68,25 @@ class CalculatePayrollTool(BaseTool):
 
     async def execute(self, args: dict[str, Any]) -> dict[str, Any]:
         country = args["country"]
-        compute = {"ES": compute_payroll_es, "MX": compute_payroll_mx}.get(country)
-        if not compute:
+        region = args.get("region")
+        if country == "ES":
+            result = compute_payroll_es(
+                lookup=get_lookup(),
+                monthly_base=Decimal(args["monthlyBase"]),
+                extras=args.get("extras", []),
+                on_date=date.fromisoformat(args["periodStart"]),
+                region=region,
+            )
+        elif country == "MX":
+            # MX state-level overlays not yet defined — region is accepted but unused
+            result = compute_payroll_mx(
+                lookup=get_lookup(),
+                monthly_base=Decimal(args["monthlyBase"]),
+                extras=args.get("extras", []),
+                on_date=date.fromisoformat(args["periodStart"]),
+            )
+        else:
             return {"error": "not_supported_for_country", "country": country}
-        result = compute(
-            lookup=get_lookup(),
-            monthly_base=Decimal(args["monthlyBase"]),
-            extras=args.get("extras", []),
-            on_date=date.fromisoformat(args["periodStart"]),
-        )
         return _result_to_jsonable(result)
 
 
