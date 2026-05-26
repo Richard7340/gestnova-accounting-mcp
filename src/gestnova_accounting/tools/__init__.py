@@ -46,6 +46,13 @@ from .compliance import (
     CheckComplianceStatusTool,
     DetectComplianceUpdatesTool,
 )
+from .irpf_personal import (
+    IRPFWizardStartTool,
+    IRPFWizardAnswerTool,
+    IRPFCalculateTool,
+    IRPFDeduccionesCCAATool,
+    IRPFGuiaPresentacionTool,
+)
 
 
 class PingTool(BaseTool):
@@ -92,4 +99,9 @@ def get_all_tools() -> list[BaseTool]:
         GetComplianceTemplateTool(),
         CheckComplianceStatusTool(),
         DetectComplianceUpdatesTool(),
+        IRPFWizardStartTool(),
+        IRPFWizardAnswerTool(),
+        IRPFCalculateTool(),
+        IRPFDeduccionesCCAATool(),
+        IRPFGuiaPresentacionTool(),
     ]
