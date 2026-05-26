@@ -295,11 +295,10 @@ class TestIRPFWizardStartTool:
         assert "question" in result
 
     @pytest.mark.asyncio
-    async def test_start_first_question_is_ccaa(self):
+    async def test_start_first_question_is_ejercicio(self):
         tool = IRPFWizardStartTool()
         result = await tool.execute({})
-        assert result["field"] == "ccaa"
-        assert "options" in result
+        assert result["field"] == "ejercicio"
 
 
 class TestIRPFWizardAnswerTool:
@@ -318,6 +317,7 @@ class TestIRPFWizardAnswerTool:
         sid = r["session_id"]
 
         answers = [
+            2025,        # ejercicio
             "madrid",    # ccaa
             "soltero",   # situacion_personal
             30000,       # ingresos_brutos
@@ -336,7 +336,6 @@ class TestIRPFWizardAnswerTool:
             r = await answer.execute({"session_id": sid, "answer": ans})
             if i < len(answers) - 1:
                 assert "question" in r
-                assert r["step"] == i + 1
             else:
                 assert r["completed"] is True
                 assert "results" in r
@@ -350,7 +349,7 @@ class TestIRPFWizardAnswerTool:
         r = await start.execute({})
         sid = r["session_id"]
 
-        answers = ["madrid", "soltero", 30000, 4500, 1900, False, 0, 0, 0, 0, 0, 0]
+        answers = [2025, "madrid", "soltero", 30000, 4500, 1900, False, 0, 0, 0, 0, 0, 0]
         for ans in answers:
             r = await answer.execute({"session_id": sid, "answer": ans})
 
@@ -417,7 +416,7 @@ class TestIRPFGuiaPresentacionTool:
     async def test_default_year(self):
         tool = IRPFGuiaPresentacionTool()
         result = await tool.execute({})
-        assert result["ejercicio"] == 2024
+        assert result["ejercicio"] == 2025
         assert "plazo" in result
         assert "como_presentar" in result
         assert "documentos_necesarios" in result

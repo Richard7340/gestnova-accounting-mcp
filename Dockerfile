@@ -12,9 +12,8 @@ WORKDIR /app
 RUN pip install --no-cache-dir uv
 
 COPY pyproject.toml ./
-RUN uv pip install --system .
-
 COPY src ./src
+RUN uv pip install --system .
 
 EXPOSE 8014
 CMD ["gestnova-accounting-http"]

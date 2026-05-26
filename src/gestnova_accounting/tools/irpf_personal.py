@@ -2,6 +2,9 @@
 
 Permite al agente guiar al usuario paso a paso para preparar su declaracion,
 calcular el resultado, y explicar todas las deducciones aplicables.
+
+Cubre las 17 CCAA + Ceuta y Melilla. Pais Vasco y Navarra se marcan como
+regimen foral (sus haciendas forales aplican normativa diferente).
 """
 from __future__ import annotations
 
@@ -10,6 +13,24 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from ._base import BaseTool
+
+# ── Disclaimer legal (se incluye en todas las respuestas) ───────────────────
+DISCLAIMER = (
+    "Esta informacion es asistencia educativa basada en legislacion vigente. "
+    "NO sustituye asesoria fiscal profesional. La veracidad de la declaracion "
+    "es responsabilidad del contribuyente."
+)
+
+# ── CCAA con regimen foral ──────────────────────────────────────────────────
+REGIMEN_FORAL: set[str] = {"pais_vasco", "navarra"}
+
+# ── Todas las CCAA soportadas ───────────────────────────────────────────────
+ALL_CCAA: list[str] = [
+    "andalucia", "aragon", "asturias", "baleares", "canarias", "cantabria",
+    "castilla_la_mancha", "castilla_y_leon", "cataluna", "extremadura",
+    "galicia", "la_rioja", "madrid", "murcia", "navarra", "pais_vasco",
+    "valencia", "ceuta", "melilla",
+]
 
 # ── IRPF Tramos Estatales 2024/2025 ──────────────────────────────────────────
 TRAMOS_ESTATALES = [
@@ -21,7 +42,7 @@ TRAMOS_ESTATALES = [
     (300000, float("inf"), 0.245),
 ]
 
-# ── Tramos autonomicos (simplificados — los mas comunes) ─────────────────────
+# ── Tramos autonomicos (17 CCAA + Ceuta/Melilla + default) ──────────────────
 TRAMOS_AUTONOMICOS: dict[str, list[tuple[float, float, float]]] = {
     "andalucia": [
         (0, 12450, 0.095),
@@ -33,12 +54,69 @@ TRAMOS_AUTONOMICOS: dict[str, list[tuple[float, float, float]]] = {
         (60000, 120000, 0.23),
         (120000, float("inf"), 0.245),
     ],
-    "madrid": [
-        (0, 12961, 0.085),
-        (12961, 18592, 0.109),
-        (18592, 33636, 0.128),
-        (33636, 53407, 0.179),
-        (53407, float("inf"), 0.21),
+    "aragon": [
+        (0, 12450, 0.10),
+        (12450, 20200, 0.125),
+        (20200, 34000, 0.155),
+        (34000, 50000, 0.19),
+        (50000, 60000, 0.215),
+        (60000, 70000, 0.225),
+        (70000, 90000, 0.235),
+        (90000, 130000, 0.245),
+        (130000, 150000, 0.25),
+        (150000, float("inf"), 0.255),
+    ],
+    "asturias": [
+        (0, 12450, 0.10),
+        (12450, 17707, 0.12),
+        (17707, 33007, 0.14),
+        (33007, 53407, 0.185),
+        (53407, 70000, 0.215),
+        (70000, 90000, 0.225),
+        (90000, 175000, 0.245),
+        (175000, float("inf"), 0.255),
+    ],
+    "baleares": [
+        (0, 10000, 0.095),
+        (10000, 18000, 0.115),
+        (18000, 30000, 0.145),
+        (30000, 48000, 0.175),
+        (48000, 70000, 0.20),
+        (70000, 90000, 0.225),
+        (90000, 120000, 0.235),
+        (120000, 175000, 0.245),
+        (175000, float("inf"), 0.25),
+    ],
+    "canarias": [
+        (0, 12450, 0.09),
+        (12450, 17707, 0.115),
+        (17707, 33007, 0.14),
+        (33007, 53407, 0.185),
+        (53407, 90000, 0.235),
+        (90000, float("inf"), 0.24),
+    ],
+    "cantabria": [
+        (0, 12450, 0.095),
+        (12450, 20200, 0.12),
+        (20200, 35200, 0.15),
+        (35200, 46000, 0.175),
+        (46000, 60000, 0.19),
+        (60000, 90000, 0.235),
+        (90000, float("inf"), 0.255),
+    ],
+    "castilla_la_mancha": [
+        (0, 12450, 0.095),
+        (12450, 20200, 0.12),
+        (20200, 35200, 0.15),
+        (35200, 60000, 0.185),
+        (60000, float("inf"), 0.225),
+    ],
+    "castilla_y_leon": [
+        (0, 12450, 0.095),
+        (12450, 20200, 0.12),
+        (20200, 35200, 0.145),
+        (35200, 53407, 0.185),
+        (53407, float("inf"), 0.215),
     ],
     "cataluna": [
         (0, 12450, 0.105),
@@ -50,6 +128,54 @@ TRAMOS_AUTONOMICOS: dict[str, list[tuple[float, float, float]]] = {
         (120000, 175000, 0.245),
         (175000, float("inf"), 0.255),
     ],
+    "extremadura": [
+        (0, 12450, 0.095),
+        (12450, 20200, 0.12),
+        (20200, 35200, 0.155),
+        (35200, 60000, 0.19),
+        (60000, 80000, 0.235),
+        (80000, 100000, 0.245),
+        (100000, float("inf"), 0.25),
+    ],
+    "galicia": [
+        (0, 12450, 0.095),
+        (12450, 20200, 0.12),
+        (20200, 35200, 0.145),
+        (35200, 60000, 0.185),
+        (60000, float("inf"), 0.225),
+    ],
+    "la_rioja": [
+        (0, 12450, 0.09),
+        (12450, 20200, 0.115),
+        (20200, 35200, 0.14),
+        (35200, 50000, 0.185),
+        (50000, 65000, 0.19),
+        (65000, 80000, 0.235),
+        (80000, float("inf"), 0.255),
+    ],
+    "madrid": [
+        (0, 12961, 0.085),
+        (12961, 18592, 0.109),
+        (18592, 33636, 0.128),
+        (33636, 53407, 0.179),
+        (53407, float("inf"), 0.21),
+    ],
+    "murcia": [
+        (0, 12450, 0.095),
+        (12450, 20200, 0.12),
+        (20200, 35200, 0.145),
+        (35200, 60000, 0.185),
+        (60000, float("inf"), 0.235),
+    ],
+    "navarra": [],  # REGIMEN FORAL — no soportado en v1
+    "pais_vasco": [
+        (0, 15795, 0.23),
+        (15795, 31590, 0.28),
+        (31590, 47386, 0.35),
+        (47386, 78630, 0.40),
+        (78630, 130424, 0.45),
+        (130424, float("inf"), 0.49),
+    ],
     "valencia": [
         (0, 12450, 0.10),
         (12450, 17000, 0.12),
@@ -60,13 +186,19 @@ TRAMOS_AUTONOMICOS: dict[str, list[tuple[float, float, float]]] = {
         (80000, 140000, 0.245),
         (140000, float("inf"), 0.255),
     ],
-    "pais_vasco": [
-        (0, 15795, 0.23),
-        (15795, 31590, 0.28),
-        (31590, 47386, 0.35),
-        (47386, 78630, 0.40),
-        (78630, 130424, 0.45),
-        (130424, float("inf"), 0.49),
+    "ceuta": [
+        (0, 12450, 0.095),
+        (12450, 20200, 0.12),
+        (20200, 35200, 0.15),
+        (35200, 60000, 0.185),
+        (60000, float("inf"), 0.225),
+    ],
+    "melilla": [
+        (0, 12450, 0.095),
+        (12450, 20200, 0.12),
+        (20200, 35200, 0.15),
+        (35200, 60000, 0.185),
+        (60000, float("inf"), 0.225),
     ],
     "default": [
         (0, 12450, 0.095),
@@ -118,19 +250,40 @@ DEDUCCIONES_CCAA: dict[str, list[dict[str, Any]]] = {
             "max": 4000,
         },
     ],
-    "madrid": [
+    "aragon": [
+        {"id": "alquiler_vivienda", "amount": 455, "condition": "Alquiler vivienda habitual", "max_renta": 15000},
+        {"id": "nacimiento_adopcion", "amount": 500, "condition": "Por nacimiento o adopcion"},
+    ],
+    "asturias": [
         {
             "id": "alquiler_vivienda",
-            "percent": 0.30,
-            "condition": "Alquiler vivienda habitual (< 25 o > 65 anios)",
-            "max": 1000,
-            "max_renta": 25620,
+            "percent": 0.10,
+            "condition": "Alquiler vivienda habitual (< 35 anios)",
+            "max": 455,
+            "max_renta": 22000,
         },
-        {"id": "nacimiento_adopcion", "amount": 600, "condition": "Por nacimiento o adopcion (1er hijo)"},
-        {"id": "nacimiento_adopcion_2", "amount": 750, "condition": "Por nacimiento o adopcion (2o hijo)"},
-        {"id": "nacimiento_adopcion_3", "amount": 900, "condition": "Por nacimiento o adopcion (3er hijo+)"},
-        {"id": "gastos_educativos", "percent": 0.15, "condition": "Gastos educativos (uniformes, idiomas)", "max": 400},
-        {"id": "cuidado_hijos_3", "percent": 0.20, "condition": "Gastos guarderia hijos < 3 anios", "max": 1000},
+        {"id": "nacimiento_adopcion", "amount": 300, "condition": "Por nacimiento o adopcion"},
+    ],
+    "baleares": [
+        {
+            "id": "alquiler_vivienda",
+            "percent": 0.15,
+            "condition": "Alquiler vivienda habitual (< 36 anios)",
+            "max": 400,
+            "max_renta": 20000,
+        },
+        {"id": "nacimiento_adopcion", "amount": 400, "condition": "Por nacimiento o adopcion"},
+    ],
+    "canarias": [
+        {"id": "alquiler_vivienda", "amount": 500, "condition": "Alquiler vivienda habitual", "max_renta": 20000},
+        {"id": "nacimiento_adopcion", "amount": 200, "condition": "Por nacimiento o adopcion"},
+        {"id": "gastos_estudios", "amount": 1500, "condition": "Gastos de estudios universitarios fuera de la isla"},
+    ],
+    "cantabria": [],  # Consultar normativa autonomica vigente
+    "castilla_la_mancha": [],  # Consultar normativa autonomica vigente
+    "castilla_y_leon": [
+        {"id": "nacimiento_adopcion", "amount": 710, "condition": "Por nacimiento o adopcion (1er hijo)"},
+        {"id": "nacimiento_adopcion_2", "amount": 1420, "condition": "Por nacimiento o adopcion (2o hijo+)"},
     ],
     "cataluna": [
         {
@@ -149,6 +302,45 @@ DEDUCCIONES_CCAA: dict[str, list[dict[str, Any]]] = {
             "max": 9040,
         },
     ],
+    "extremadura": [
+        {"id": "alquiler_vivienda", "amount": 300, "condition": "Alquiler vivienda habitual (< 36 anios)", "max_renta": 19000},
+        {"id": "nacimiento_adopcion", "amount": 300, "condition": "Por nacimiento o adopcion"},
+    ],
+    "galicia": [
+        {
+            "id": "alquiler_vivienda",
+            "percent": 0.10,
+            "condition": "Alquiler vivienda habitual (< 35 anios)",
+            "max": 300,
+            "max_renta": 22000,
+        },
+        {"id": "nacimiento_adopcion", "amount": 360, "condition": "Por nacimiento o adopcion"},
+    ],
+    "la_rioja": [
+        {"id": "nacimiento_adopcion", "amount": 600, "condition": "Por nacimiento o adopcion (1er hijo)"},
+        {"id": "nacimiento_adopcion_2", "amount": 750, "condition": "Por nacimiento o adopcion (2o hijo)"},
+        {"id": "nacimiento_adopcion_3", "amount": 900, "condition": "Por nacimiento o adopcion (3er hijo+)"},
+    ],
+    "madrid": [
+        {
+            "id": "alquiler_vivienda",
+            "percent": 0.30,
+            "condition": "Alquiler vivienda habitual (< 25 o > 65 anios)",
+            "max": 1000,
+            "max_renta": 25620,
+        },
+        {"id": "nacimiento_adopcion", "amount": 600, "condition": "Por nacimiento o adopcion (1er hijo)"},
+        {"id": "nacimiento_adopcion_2", "amount": 750, "condition": "Por nacimiento o adopcion (2o hijo)"},
+        {"id": "nacimiento_adopcion_3", "amount": 900, "condition": "Por nacimiento o adopcion (3er hijo+)"},
+        {"id": "gastos_educativos", "percent": 0.15, "condition": "Gastos educativos (uniformes, idiomas)", "max": 400},
+        {"id": "cuidado_hijos_3", "percent": 0.20, "condition": "Gastos guarderia hijos < 3 anios", "max": 1000},
+    ],
+    "murcia": [
+        {"id": "alquiler_vivienda", "amount": 300, "condition": "Alquiler vivienda habitual (< 35 anios)", "max_renta": 24000},
+        {"id": "nacimiento_adopcion", "amount": 200, "condition": "Por nacimiento o adopcion"},
+    ],
+    "navarra": [],  # REGIMEN FORAL — normativa propia
+    "pais_vasco": [],  # REGIMEN FORAL — normativa propia
     "valencia": [
         {
             "id": "alquiler_vivienda",
@@ -167,6 +359,8 @@ DEDUCCIONES_CCAA: dict[str, list[dict[str, Any]]] = {
             "max": 5000,
         },
     ],
+    "ceuta": [],  # Bonificacion del 60% en cuota — ver calculo especial
+    "melilla": [],  # Bonificacion del 60% en cuota — ver calculo especial
 }
 
 
@@ -177,6 +371,7 @@ class IRPFWizardState:
 
     session_id: str = ""
     step: int = 0
+    ejercicio: int = 2025  # Fiscal year (default: current)
     ccaa: str = ""
     situacion_personal: str = ""  # soltero, casado, viudo, separado
     hijos: int = 0
@@ -205,6 +400,23 @@ class IRPFWizardState:
 
 def calculate_irpf(state: IRPFWizardState) -> dict:
     """Calculate IRPF based on wizard inputs."""
+    # 0. Check foral regime
+    if state.ccaa in REGIMEN_FORAL:
+        return {
+            "error": True,
+            "message": (
+                f"La CCAA {state.ccaa} tiene regimen foral propio. "
+                "Sus haciendas forales (Bizkaia, Gipuzkoa, Alava para Pais Vasco; "
+                "Navarra) aplican normativa diferente al regimen comun. "
+                "Este asistente actualmente solo cubre el regimen comun. "
+                "Consulta con tu hacienda foral."
+            ),
+            "regimen": "foral",
+            "ccaa": state.ccaa,
+            "ejercicio": state.ejercicio,
+            "disclaimer": DISCLAIMER,
+        }
+
     # 1. Base imponible
     base = state.ingresos_brutos - state.cotizaciones_ss - state.gastos_deducibles_autonomo
     if base < 0:
@@ -320,12 +532,14 @@ def calculate_irpf(state: IRPFWizardState) -> dict:
         "resultado": round(resultado, 2),
         "a_devolver": resultado < 0,
         "ccaa": state.ccaa,
+        "ejercicio": state.ejercicio,
         "tipo_efectivo": round((cuota_liquida / state.ingresos_brutos * 100) if state.ingresos_brutos > 0 else 0, 2),
         "reglas_aplicadas": [
             "Ley 35/2006 del IRPF",
             f"Tramos autonomicos {state.ccaa}",
             "RD 439/2007 Reglamento IRPF",
         ],
+        "disclaimer": DISCLAIMER,
     }
 
 
@@ -343,10 +557,21 @@ def _apply_tramos(base: float, tramos: list) -> float:
 # ── Wizard questions ─────────────────────────────────────────────────────────
 WIZARD_STEPS = [
     {
+        "field": "ejercicio",
+        "question": "Para que ejercicio fiscal? (ej: 2025 = declaracion que se presenta en 2026)",
+        "type": "number",
+        "default": 2025,
+    },
+    {
         "field": "ccaa",
         "question": "En que Comunidad Autonoma resides?",
         "type": "choice",
-        "options": ["andalucia", "madrid", "cataluna", "valencia", "pais_vasco", "otra"],
+        "options": [
+            "andalucia", "aragon", "asturias", "baleares", "canarias", "cantabria",
+            "castilla_la_mancha", "castilla_y_leon", "cataluna", "extremadura",
+            "galicia", "la_rioja", "madrid", "murcia", "navarra", "pais_vasco",
+            "valencia", "ceuta", "melilla", "otra",
+        ],
     },
     {
         "field": "situacion_personal",
@@ -431,6 +656,7 @@ class IRPFWizardStartTool(BaseTool):
             "field": step_info["field"],
             "type": step_info["type"],
             "options": step_info.get("options"),
+            "disclaimer": DISCLAIMER,
         }
 
 
@@ -464,7 +690,7 @@ class IRPFWizardAnswerTool(BaseTool):
         answer = args["answer"]
 
         # Type coercion
-        _INTEGER_FIELDS = {"hijos", "hijos_menores_3", "ascendientes_65"}
+        _INTEGER_FIELDS = {"hijos", "hijos_menores_3", "ascendientes_65", "ejercicio"}
         if step_info["type"] == "number":
             if field_name in _INTEGER_FIELDS:
                 answer = int(float(answer)) if answer else 0
@@ -514,9 +740,14 @@ class IRPFCalculateTool(BaseTool):
     input_schema = {
         "type": "object",
         "properties": {
+            "ejercicio": {"type": "integer", "description": "Ejercicio fiscal (ej: 2025)", "default": 2025},
             "ccaa": {
                 "type": "string",
-                "description": "Comunidad Autonoma: andalucia, madrid, cataluna, valencia, pais_vasco, default",
+                "description": (
+                    "Comunidad Autonoma: andalucia, aragon, asturias, baleares, canarias, "
+                    "cantabria, castilla_la_mancha, castilla_y_leon, cataluna, extremadura, "
+                    "galicia, la_rioja, madrid, murcia, navarra, pais_vasco, valencia, ceuta, melilla, default"
+                ),
             },
             "ingresos_brutos": {"type": "number", "description": "Ingresos brutos anuales (EUR)"},
             "retenciones_pagadas": {"type": "number", "description": "Retenciones IRPF ya pagadas"},
@@ -551,6 +782,7 @@ class IRPFCalculateTool(BaseTool):
 
     async def execute(self, args: dict[str, Any]) -> dict[str, Any]:
         state = IRPFWizardState(
+            ejercicio=args.get("ejercicio", 2025),
             ccaa=args.get("ccaa", "default"),
             ingresos_brutos=args["ingresos_brutos"],
             retenciones_pagadas=args["retenciones_pagadas"],
@@ -582,7 +814,11 @@ class IRPFDeduccionesCCAATool(BaseTool):
         "properties": {
             "ccaa": {
                 "type": "string",
-                "description": "Comunidad Autonoma: andalucia, madrid, cataluna, valencia, pais_vasco",
+                "description": (
+                    "Comunidad Autonoma: andalucia, aragon, asturias, baleares, canarias, "
+                    "cantabria, castilla_la_mancha, castilla_y_leon, cataluna, extremadura, "
+                    "galicia, la_rioja, madrid, murcia, navarra, pais_vasco, valencia, ceuta, melilla"
+                ),
             },
         },
         "required": ["ccaa"],
@@ -590,6 +826,20 @@ class IRPFDeduccionesCCAATool(BaseTool):
 
     async def execute(self, args: dict[str, Any]) -> dict[str, Any]:
         ccaa = args["ccaa"].lower().strip()
+
+        # Check foral regime
+        if ccaa in REGIMEN_FORAL:
+            return {
+                "ccaa": ccaa,
+                "regimen": "foral",
+                "message": (
+                    f"La CCAA {ccaa} tiene regimen foral propio. "
+                    "Consulta con la hacienda foral correspondiente."
+                ),
+                "deducciones_nacionales": [],
+                "deducciones_autonomicas": [],
+                "disclaimer": DISCLAIMER,
+            }
 
         # National deductions always apply
         nacionales = []
@@ -619,6 +869,7 @@ class IRPFDeduccionesCCAATool(BaseTool):
                 "Estas deducciones son las mas comunes. Consulta la normativa autonomica "
                 "vigente para deducciones adicionales o cambios recientes."
             ),
+            "disclaimer": DISCLAIMER,
         }
 
 
@@ -633,15 +884,15 @@ class IRPFGuiaPresentacionTool(BaseTool):
         "properties": {
             "ejercicio": {
                 "type": "integer",
-                "description": "Tax year (e.g. 2024)",
-                "default": 2024,
+                "description": "Ejercicio fiscal (ej: 2025)",
+                "default": 2025,
             },
         },
         "required": [],
     }
 
     async def execute(self, args: dict[str, Any]) -> dict[str, Any]:
-        ejercicio = args.get("ejercicio", 2024)
+        ejercicio = args.get("ejercicio", 2025)
         return {
             "ejercicio": ejercicio,
             "plazo": {
@@ -700,4 +951,5 @@ class IRPFGuiaPresentacionTool(BaseTool):
                 "RD 439/2007 Reglamento IRPF",
                 f"Orden HAC de aprobacion del modelo de declaracion {ejercicio}",
             ],
+            "disclaimer": DISCLAIMER,
         }
