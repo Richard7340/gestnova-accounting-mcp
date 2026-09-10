@@ -13,6 +13,7 @@ RUN pip install --no-cache-dir uv
 
 COPY pyproject.toml ./
 COPY src ./src
+COPY packs ./packs
 RUN uv pip install --system .
 
 EXPOSE 8014

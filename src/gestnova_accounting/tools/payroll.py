@@ -22,7 +22,18 @@ def _result_to_jsonable(r):
 
 
 # Module-level lookup — instantiated lazily by tools using PACKS_ROOT.
-_PACKS_ROOT = Path(__file__).resolve().parent.parent.parent.parent / "packs"
+def _resolver_packs_root() -> Path:
+    import os
+    env = (os.environ.get("GESTNOVA_PACKS_ROOT") or "").strip()
+    if env and Path(env).exists():
+        return Path(env)
+    # Docker: COPY packs ./packs con WORKDIR /app
+    if Path("/app/packs").exists():
+        return Path("/app/packs")
+    return Path(__file__).resolve().parent.parent.parent.parent / "packs"
+
+
+_PACKS_ROOT = _resolver_packs_root()
 _lookup: RuleLookup | None = None
 
 
